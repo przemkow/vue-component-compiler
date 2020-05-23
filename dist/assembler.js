@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.assembleFromSource = exports.assemble = void 0;
 const source_map_1 = require("source-map");
 const source_map_2 = require("./source-map");
 const path = require("path");
@@ -11,12 +12,12 @@ function assemble(compiler, filename, result, options = {}) {
             source: result.script.code,
             map: result.script.map
         },
-        template: result.template && Object.assign({}, result.template, { source: result.template.code, functional: result.template.functional }),
+        template: result.template && Object.assign(Object.assign({}, result.template), { source: result.template.code, functional: result.template.functional }),
         styles: result.styles.map(style => {
             if (style.errors.length) {
                 console.error(style.errors);
             }
-            return Object.assign({}, style, { source: style.code, media: style.media, scoped: style.scoped, moduleName: style.moduleName, module: style.module });
+            return Object.assign(Object.assign({}, style), { source: style.code, media: style.media, scoped: style.scoped, moduleName: style.moduleName, module: style.module });
         })
     });
 }

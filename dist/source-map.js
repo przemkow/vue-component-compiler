@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.merge = void 0;
 const source_map_1 = require("source-map");
 function merge(oldMap, newMap) {
     if (!oldMap)

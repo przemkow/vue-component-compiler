@@ -5,9 +5,9 @@ export declare const createCompiler: ({ script, style, template }: {
     template: TemplateOptions;
 }) => SFCCompiler;
 export declare const createDefaultCompiler: (options?: {
-    script?: ScriptOptions | undefined;
-    style?: StyleOptions | undefined;
-    template?: TemplateOptions | undefined;
+    script?: ScriptOptions;
+    style?: StyleOptions;
+    template?: TemplateOptions;
 }) => SFCCompiler;
 export * from './compiler';
 export * from './assembler';

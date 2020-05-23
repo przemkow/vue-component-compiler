@@ -1,9 +1,10 @@
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -12,11 +13,14 @@ var __rest = (this && this.__rest) || function (s, e) {
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
         t[p] = s[p];
     if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
     return t;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SFCCompiler = void 0;
 const component_compiler_utils_1 = require("@vue/component-compiler-utils");
 const postcss_modules_sync_1 = require("postcss-modules-sync");
 const postcss_clean_1 = require("./postcss-clean");
@@ -100,7 +104,7 @@ class SFCCompiler {
     compileTemplate(filename, template) {
         const _a = this.template, { preprocessOptions } = _a, options = __rest(_a, ["preprocessOptions"]);
         const functional = 'functional' in template.attrs;
-        return Object.assign({ functional }, component_compiler_utils_1.compileTemplate(Object.assign({}, options, { source: template.src
+        return Object.assign({ functional }, component_compiler_utils_1.compileTemplate(Object.assign(Object.assign({}, options), { source: template.src
                 ? this.read(template.src, filename)
                 : template.content, filename, preprocessLang: template.lang, preprocessOptions: (template.lang &&
                 preprocessOptions &&
@@ -125,7 +129,7 @@ class SFCCompiler {
             .slice()
             .concat([
             needsCSSModules
-                ? postcss_modules_sync_1.default(Object.assign({ generateScopedName: '[path][local]-[hash:base64:4]' }, this.style.postcssModulesOptions, { getJSON: (t) => {
+                ? postcss_modules_sync_1.default(Object.assign(Object.assign({ generateScopedName: '[path][local]-[hash:base64:4]' }, this.style.postcssModulesOptions), { getJSON: (t) => {
                         tokens = t;
                     } }))
                 : undefined,
@@ -152,7 +156,7 @@ class SFCCompiler {
                 preprocessOptions,
                 trim: this.style.trim
             },
-            prepare: result => (Object.assign({ media: typeof style.attrs.media === 'string' ? style.attrs.media : undefined, scoped: style.scoped, moduleName: style.module === true ? '$style' : style.module, module: tokens }, result, { code: result.code }))
+            prepare: result => (Object.assign(Object.assign({ media: typeof style.attrs.media === 'string' ? style.attrs.media : undefined, scoped: style.scoped, moduleName: style.module === true ? '$style' : style.module, module: tokens }, result), { code: result.code }))
         };
     }
     read(filename, context) {
